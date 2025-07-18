@@ -8,7 +8,9 @@ class ResumeParser:
 
     def parse_resume(self, resume_text: str) -> dict:
         prompt = f"""
-You are a resume parser. Extract the following fields from this resume:
+You are a resume parser.
+
+Extract the following fields from the given resume text:
 - Full Name
 - Email
 - Phone Number
@@ -16,11 +18,14 @@ You are a resume parser. Extract the following fields from this resume:
 - Education
 - Experience
 
-Give the output as JSON.
+Return the result strictly as a **valid JSON object**. Do NOT include any extra text, markdown, explanations, or formatting.
 
 Resume:
+\"\"\"
 {resume_text}
+\"\"\"
 """
+
         try:
             response = self.model.generate_content(prompt)
             return response.text
