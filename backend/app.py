@@ -4,6 +4,8 @@ from services.gemini_client import GeminiClient
 from services.pdf_processor import PDFProcessor
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
+from services.resume_parser import ResumeParser
+from fastapi import Form
 import os
 import logging
 
@@ -53,3 +55,9 @@ async def extract_pdf(file: UploadFile = File(...)):
     pdf = PDFProcessor()
     text = pdf.extract_text("temp.pdf")
     return {"text": text}
+
+@app.post("/parse-resume")
+async def parse_resume(resume_text: str = Form(...)):
+    parser = ResumeParser()
+    result = parser.parse_resume(resume_text)
+    return {"parsed": result}
