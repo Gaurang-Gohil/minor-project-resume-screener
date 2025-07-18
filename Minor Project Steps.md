@@ -1,0 +1,53 @@
+Minor Project Steps
+
+Overview
+
+AI-Powered Resume Screening Tool for Recruiters
+Recruiters often receive hundreds of resumes for a single job. Manually reviewing each one for required skills, education, and experience is time-consuming. There's a need for an automated tool that can analyze, rank, and filter resumes based on job descriptions.
+
+Objective
+Create a cloud-based web app that:
+	Allows uploading multiple resumes (PDF/DOCX)
+	Parses resume content using Gemini API
+	Matches it against a provided Job Description (JD)
+	Scores and ranks candidates based on relevance
+
+Key Features
+| Feature           | Description                                    |
+| ----------------- | ---------------------------------------------- |
+| 📤 Resume Upload | Upload multiple resumes in PDF/DOCX format     |
+| 📝 JD Input      | Paste or upload a job description              |
+| ⚙️ AI Matching   | NLP-based keyword/entity extraction & matching |
+| 📊 Ranking       | Show candidates sorted by match percentage     |
+| 🔍 View Details  | Expand each candidate to view key highlights   |
+| 📁 Export        | Download results as CSV or PDF                 |
+
+Cloud Components (with Terraform):
+EC2 instance to host the app
+S3 bucket to store uploaded resumes
+(Optional) RDS or DynamoDB to log results
+IAM roles for secure S3 access
+
+
+Day 1:
+
+Created a GitHub repo and structured the files 
+GitHub link:- https://github.com/Gaurang-Gohil/minor-project-resume-screener.git
+
+Environment Setup
+Install and setup:
+	Python
+	node.js and npm
+	terraform CLI
+	AWS CLI
+venv in the backend folder:- venv\Scripts\activate
+pip install flask
+setup a basic flask app
+Create a frontend boiler plate
+	npx create-react-app .
+	npm install axios
+Test the setup and flask app
+	
+
+
+
