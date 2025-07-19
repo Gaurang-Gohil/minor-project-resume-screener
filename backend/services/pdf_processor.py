@@ -1,6 +1,8 @@
 from PyPDF2 import PdfReader
 from typing import List, Dict
 from io import BytesIO
+import logging
+logger = logging.getLogger(__name__)
 
 
 class PDFProcessor:
@@ -22,7 +24,7 @@ class PDFProcessor:
 
         for file in upload_files:
             try:
-                print(f"Processing: {file.filename}")
+                logger.info(f"Processing: {file.filename}")
 
                 content = file.file.read()
                 file.file.seek(0)

@@ -3,6 +3,8 @@ import os
 import json
 from typing import List, Dict, Any
 from dotenv import load_dotenv
+import logging
+logger = logging.getLogger(__name__)
 load_dotenv()
 
 class ResumeParser:
@@ -40,11 +42,11 @@ Return format:
             return json.loads(raw_text)
 
         except json.JSONDecodeError as je:
-            print("JSON parsing failed:", je)
+            logger.warning(f"JSON parsing failed: {je}")
             return {"error": "Invalid JSON format from Gemini", "details": str(je)}
 
         except Exception as e:
-            print("Gemini error:", e)
+            logger.error(f"Gemini error: {e}")
             return {"error": f"Gemini request failed: {str(e)}"}
 
     def parse_multiple_resumes(self, pdf_processor_output: List[Dict[str, Any]]) -> List[Dict[str, Any]]:

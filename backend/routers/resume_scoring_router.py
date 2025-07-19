@@ -3,6 +3,8 @@ from pydantic import BaseModel
 from typing import List, Dict
 from datetime import datetime
 import uuid
+import logging
+logger = logging.getLogger(__name__)
 
 # Import services
 from services.pdf_processor import PDFProcessor
@@ -30,12 +32,27 @@ async def process_resume_batch(
 
     # Read file contents into memory (UploadFile gets closed after the request ends)
     file_data_list = []
+
     for file in files:
-        content = await file.read()
-        file_data_list.append({
-            "filename": file.filename,
-            "content": content
-        })
+        try:
+            # Read content
+            content = await file.read()
+
+            if not content or len(content) < 100:  
+                raise ValueError("File is empty or too short")
+
+            # Validate PDF header
+            if not content.startswith(b"%PDF"):
+                raise ValueError("Not a valid PDF file")
+
+            file_data_list.append({
+                "filename": file.filename,
+                "content": content
+            })
+
+        except Exception as e:
+            logger.error(f"Error processing file {file.filename}: {str(e)}")
+            continue
 
     task_id = str(uuid.uuid4())
 
@@ -47,7 +64,7 @@ async def process_resume_batch(
         "started_at": datetime.now().isoformat()
     }
 
-    print("✅ Ready to start background task")
+    logger.info("Ready to start background task")
 
     background_tasks.add_task(
         process_batch_background,
@@ -66,26 +83,43 @@ async def process_resume_batch(
 
 @router.get("/results/{task_id}")
 async def get_results(task_id: str):
-    """Get final results for completed task"""
+    """Get final scoring results after processing is complete"""
     if task_id not in processing_tasks:
         raise HTTPException(status_code=404, detail="Task not found")
 
     task = processing_tasks[task_id]
-    if task["status"] not in ["completed", "failed"]:
+
+    if task["status"] != "completed":
         raise HTTPException(
             status_code=400,
-            detail=f"Processing not complete. Current status: {task['status']}"
+            detail=f"Results not available. Current status: {task['status']}"
         )
 
-    return task
+    return {
+        "task_id": task_id,
+        "results": task.get("results", {})
+    }
 
 @router.get("/status/{task_id}")
 async def get_task_status(task_id: str):
-    """Check processing status"""
+    """Check processing status and progress (no full results)"""
     if task_id not in processing_tasks:
         raise HTTPException(status_code=404, detail="Task not found")
 
-    return processing_tasks[task_id]
+    task = processing_tasks[task_id]
+    
+    # Only return metadata, not full results
+    return {
+        "task_id": task_id,
+        "status": task["status"],
+        "total_files": task.get("total_files", 0),
+        "processed": task.get("processed", 0),
+        "estimated_time": task.get("estimated_time", ""),
+        "started_at": task.get("started_at", ""),
+        "completed_at": task.get("completed_at", None),
+        "error": task.get("error", None)
+    }
+
 
 @router.get("/list-tasks")
 async def list_all_tasks():
@@ -95,7 +129,7 @@ async def list_all_tasks():
 
 # Background Task Logic
 async def process_batch_background(task_id: str, job_description: str, file_data_list: List[Dict]):
-    print(f"🚀 process_batch_background started for task: {task_id}")
+    logger.info(" process_batch_background started for task: {task_id}")
 
     try:
         processing_tasks[task_id]["status"] = "extracting_text"
