@@ -19,20 +19,23 @@ class ResumeParser:
     def parse_resume(self, resume_text: str) -> dict[str, Any]:
         """Parse a single resume text and return structured JSON"""
         prompt = f"""
-Extract resume information and return as clean JSON:
+You are a smart resume parser. Extract **all relevant information** from the resume text and return a structured and complete JSON object.
 
-Resume text: {resume_text}
+Resume text:
+{resume_text}
 
-Return format:
-{{
-  "name": "string",
-  "email": "string", 
-  "phone": "string",
-  "skills": ["skill1", "skill2"],
-  "education": [{{"degree": "string", "institution": "string", "year": "string"}}],
-  "experience": [{{"title": "string", "company": "string", "description": "string"}}]
-}}
+Instructions:
+- The output must be valid JSON.
+- Include all clearly identified fields like name, email, phone, skills, education, experience, projects, certifications, languages, links, etc.
+- If any field is missing in the resume, skip it (do not insert null or empty fields).
+- Use intuitive field names.
+- Keep lists for repeated fields (e.g., skills, education, experience).
+- Keep text clean — remove newlines and unnecessary whitespace.
+
+Return only the JSON object.
 """
+
+
         try:
             response = self.model.generate_content(prompt, generation_config=self.generation_config)
 
