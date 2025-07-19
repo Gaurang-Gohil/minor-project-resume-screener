@@ -1,13 +1,14 @@
-from fastapi import FastAPI, Request, UploadFile, File
+from fastapi import FastAPI
 from dotenv import load_dotenv
-from services.gemini_client import GeminiClient
-from services.pdf_processor import PDFProcessor
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
-from services.resume_parser import ResumeParser
-from fastapi import Form
+from fastapi import Request
 import os
 import logging
+
+# Import routers
+from routers.resume_scoring_router import router as scoring_router
+from routers.test_router import router as test_router
 
 # Load environment variables
 load_dotenv()
@@ -18,12 +19,16 @@ logging.basicConfig(
     format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
-logger.info("Starting FastAPI app...")
+logger.info("Starting AI Resume Screening FastAPI app...")
 
 # Create FastAPI app
-app = FastAPI()
+app = FastAPI(
+    title="AI Resume Screening Tool",
+    description="AI-powered resume screening and scoring system using Gemini API",
+    version="1.0.0"
+)
 
-# Setup rate limiter with fallback IP method
+# Setup rate limiter
 def get_client_ip(request: Request):
     return request.client.host
 
@@ -31,33 +36,26 @@ limiter = Limiter(key_func=get_client_ip)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
+# Include routers
+app.include_router(scoring_router)
+app.include_router(test_router)
+
 # Root route
 @app.get("/")
 @limiter.limit("10/minute")
 def root(request: Request):
     logger.info("Root endpoint hit.")
-    return {"message": "Rate limit test successful"}
+    return {
+        "message": "AI Resume Screening Tool API",
+        "version": "1.0.0",
+        "status": "active",
+        "endpoints": {
+            "batch_scoring": "/api/scoring/process-batch",
+            "check_results": "/api/scoring/results/{task_id}",
+            "test_endpoints": "/api/test/"
+        }
+    }
 
-# Gemini test route
-@app.get("/test-gemini")
-def test_gemini():
-    gemini = GeminiClient()
-    result = gemini.test_connection()
-    return {"response": result}
-
-# PDF text extraction route
-@app.post("/extract-pdf-text")
-async def extract_pdf(file: UploadFile = File(...)):
-    contents = await file.read()
-    with open("temp.pdf", "wb") as f:
-        f.write(contents)
-
-    pdf = PDFProcessor()
-    text = pdf.extract_text("temp.pdf")
-    return {"text": text}
-
-@app.post("/parse-resume")
-async def parse_resume(resume_text: str = Form(...)):
-    parser = ResumeParser()
-    result = parser.parse_resume(resume_text)
-    return {"parsed": result}
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
