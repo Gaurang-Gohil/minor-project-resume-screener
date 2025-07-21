@@ -1,0 +1,19 @@
+# Ignore environment files
+*.env
+
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+
+# VSCode settings
+.vscode/
+
+# Node modules (if using frontend with npm)
+node_modules/
+
+# Logs and system files
+*.log
+.DS_Store
+
+# Terraform cache (optional)
+.terraform/
