@@ -9,7 +9,7 @@ load_dotenv()
 
 class ResumeParser:
     def __init__(self):
-        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
         self.model = genai.GenerativeModel("gemini-2.5-pro")
         self.generation_config = genai.GenerationConfig(
             response_mime_type="application/json",

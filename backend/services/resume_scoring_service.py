@@ -7,7 +7,7 @@ from typing import List, Dict
 
 class RateLimitedResumeScorer:
     def __init__(self):
-        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+        genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
         self.model = genai.GenerativeModel("gemini-2.5-pro")
         
         self.generation_config = genai.GenerationConfig(
@@ -17,7 +17,7 @@ class RateLimitedResumeScorer:
         
         # Rate limiting: 4 resumes per minute
         self.resumes_per_minute = 4
-        self.delay_between_requests = 15  # seconds
+        self.delay_between_requests = 10  # seconds
 
     async def score_resume_batch(self, job_description: str, parsed_resumes: List[Dict]) -> Dict:
         """Score resumes using structured JSON data from resume parser"""
