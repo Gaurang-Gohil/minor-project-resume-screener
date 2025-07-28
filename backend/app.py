@@ -6,6 +6,13 @@ from fastapi import Request
 import os
 import boto3
 import logging
+from fastapi.middleware.cors import CORSMiddleware
+
+origins = [
+    "http://localhost",
+    "http://localhost:3000", # The origin for your React app
+]
+
 
 session = boto3.session.Session(
     aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
@@ -34,6 +41,14 @@ app = FastAPI(
     title="AI Resume Screening Tool",
     description="AI-powered resume screening and scoring system using Gemini API",
     version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins, # Allows specific origins
+    allow_credentials=True,
+    allow_methods=["*"], # Allows all methods (GET, POST, etc.)
+    allow_headers=["*"], # Allows all headers
 )
 
 # Setup rate limiter
