@@ -1,38 +1,186 @@
-.App {
-  text-align: center;
+/* Base Layout */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #1e1e2f;
+  color: #f0f0f0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Container Box */
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #2a2a40;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Section Titles */
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  position: relative;
+  padding-bottom: 5px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  width: 40px;
+  background-color: #007bff;
+  border-radius: 4px;
+}
+
+/* Job Description Box */
+.jd-section {
+  width: 100%;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: #2a2a40;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.jd-label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.jd-textarea {
+  width: 100%;
+  min-height: 120px;
+  font-size: 1rem;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  resize: vertical;
+  background-color: #33334d;
+  color: #f0f0f0;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
+.jd-textarea:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+/* File Upload Button */
+.choose-file {
+  display: inline-block;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background-color 0.3s;
+}
+
+.choose-file:hover {
+  background-color: #0056b3;
+}
+
+.choose-file input {
+  display: none;
+}
+
+/* Resume File List */
+.file-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.file-item {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: space-between;
+  background-color: #38385a;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin: 8px 0;
+  font-size: 1rem;
+  word-break: break-word;
+  transition: background-color 0.3s ease;
 }
 
-.App-link {
-  color: #61dafb;
+.file-item:hover {
+  background-color: #46466e;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.file-index {
+  color: #a0a0ff;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.file-name {
+  flex-grow: 1;
+  color: #ffffff;
+}
+
+.remove-btn {
+  background-color: #ff4c4c;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: bold;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.remove-btn:hover {
+  background-color: #d11a2a;
+}
+
+.clear-all-btn {
+  margin-top: 12px;
+  background-color: #ff4c4c;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.clear-all-btn:hover {
+  background-color: #c0392b;
+}
+
+/* Screening Result Table */
+.result-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: #2a2a40;
+  color: #f0f0f0;
+}
+
+.result-table th,
+.result-table td {
+  padding: 12px 16px;
+  border: 1px solid #444;
+  text-align: left;
+}
+
+.result-table th {
+  background-color: #33334d;
+  color: #00aced;
+  font-weight: 600;
 }

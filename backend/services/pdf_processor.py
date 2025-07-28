@@ -46,3 +46,4 @@ class PDFProcessor:
         for page in reader.pages:
             text += page.extract_text() or ""
         return text
+
