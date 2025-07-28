@@ -8,13 +8,13 @@ const JobDescriptionInput = ({ value, onChange }) => {
 
   return (
    <div className="jd-section">
-  <h2 className="section-title">Job Description</h2>
+  <h2 className="section-title">Job Title</h2>
   <textarea
     className="jd-textarea"
     value={value}
     onChange={handleChange}
     placeholder="Enter job description here..."
-    rows={6}
+    rows={1}
   />
 </div>
 

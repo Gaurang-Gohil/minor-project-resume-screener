@@ -2,63 +2,28 @@ import React, { useState } from "react";
 import Header from "./components/Header";
 import FileUpload from "./components/FileUpload";
 import JobDescriptionInput from "./components/JobDescriptionInput";
-import ResultTable from "./components/ResultTable";
 import ExecuteButton from "./components/ExecuteButton";
-import { extractTextFromPDF } from "./utils/pdfParser"; // ✅ PDF-only text extractor
-import "./App.css"; // Ensure you import the CSS  
+// Correcting the import path to match the component we've been working on
+import ShowStatus from "./components/DisplayResult"; 
+import "./App.css"; 
+
 function App() {
+  // State for the user inputs
   const [files, setFiles] = useState([]);
   const [jobDescription, setJobDescription] = useState("");
-  const [results, setResults] = useState([]);
+  
+  // State to hold the process ID received from the backend
+  const [processId, setProcessId] = useState(null);
 
-  const extractSkillsFromJD = (jd) => {
-    return jd
-      .toLowerCase()
-      .split(/[\s,]+/)
-      .filter((word) => word.length > 2);
+  // This function is passed to ExecuteButton.
+  // It receives the ID from the backend and updates our state.
+  const handleProcessStart = (id) => {
+    console.log("Process started in App.js with ID:", id);
+    setProcessId(id);
   };
 
-  const handleProcess = async () => {
-    if (!files || files.length === 0) {
-      alert("Please upload at least one resume.");
-      return;
-    }
-
-    if (!jobDescription || jobDescription.trim() === "") {
-      alert("Please enter a job description.");
-      return;
-    }
-
-    const jdSkills = extractSkillsFromJD(jobDescription);
-
-    const fileResults = await Promise.all(
-      files.map(async (file) => {
-        try {
-          const lowerText = await extractTextFromPDF(file); // ✅ PDF-only
-          const matched = jdSkills.filter((skill) =>
-            lowerText.includes(skill)
-          );
-          const score = Math.round((matched.length / jdSkills.length) * 100);
-
-          return {
-            name: file.name.replace(".pdf", ""),
-            score: score || 0,
-            matchedSkills: matched,
-          };
-        } catch (error) {
-          console.error(`Failed to process ${file.name}`, error);
-          return {
-            name: file.name.replace(".pdf", ""),
-            score: 0,
-            matchedSkills: "Error parsing PDF",
-          };
-        }
-      })
-    );
-
-    const sorted = fileResults.sort((a, b) => b.score - a.score);
-    setResults(sorted);
-  };
+  // The old frontend processing logic (handleProcess) has been removed,
+  // as this is now handled by your backend.
 
   return (
     <div className="App">
@@ -68,12 +33,19 @@ function App() {
         onChange={setJobDescription}
       />
       <FileUpload files={files} setFiles={setFiles} />
+      
+      {/* ExecuteButton now triggers the backend process and calls handleProcessStart */}
       <ExecuteButton
         files={files}
         jobDescription={jobDescription}
-        onProcess={handleProcess}
+        onProcessStart={handleProcessStart}
       />
-      <ResultTable results={results} />
+      
+      {/* ShowStatus receives the processId and will start polling for results */}
+      <ShowStatus processId={processId} />
+      
+      {/* The old ResultTable is removed because ShowStatus now handles displaying results.
+          You can move table-like formatting into the ShowStatus component if desired. */}
     </div>
   );
 }
