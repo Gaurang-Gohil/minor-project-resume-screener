@@ -40,7 +40,7 @@ body {
 
 /* Job Description Box */
 .jd-section {
-  width: 100%;
+  /* width: 100%; */
   margin-bottom: 2rem;
   padding: 1.5rem;
   background-color: #2a2a40;
@@ -55,9 +55,7 @@ body {
   margin-bottom: 10px;
 }
 
-.jd-textarea {
-  width: 100%;
-  min-height: 120px;
+.jd-text {
   font-size: 1rem;
   padding: 12px;
   border-radius: 8px;

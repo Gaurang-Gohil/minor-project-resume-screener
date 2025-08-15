@@ -9,8 +9,8 @@ const JobDescriptionInput = ({ value, onChange }) => {
   return (
    <div className="jd-section">
   <h2 className="section-title">Job Title</h2>
-  <textarea
-    className="jd-textarea"
+  <input type="text"
+    className="jd-text"
     value={value}
     onChange={handleChange}
     placeholder="Enter job description here..."
