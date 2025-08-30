@@ -1,3 +1,4 @@
+import logging
 import boto3
 import os
 from botocore.exceptions import ClientError
@@ -72,6 +73,7 @@ class S3Uploader:
             raise RuntimeError(f"Upload failed: {str(e)}")
 
 
+
     def test_s3_connection(self):
         """Test S3 connection and bucket access"""
         try:
@@ -81,7 +83,6 @@ class S3Uploader:
             # Test upload
             test_content = BytesIO(b"test")
             test_filename = f"test_{uuid.uuid4()}.txt"
-            
             self.upload_file(test_content, test_filename)
             
             # Cleanup
@@ -90,7 +91,8 @@ class S3Uploader:
             return True
         except:
             return False
-        
+
+            
     
 
 
