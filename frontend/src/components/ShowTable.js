@@ -28,9 +28,9 @@ const tdStyles = {
   fontWeight: "400",
 };
 
-const trHover = {
-  background: "#343746",
-};
+// const trHover = {
+//   background: "#343746",
+// };
 
 function ShowTable({ taskId }) {
   const [data, setData] = useState(null);

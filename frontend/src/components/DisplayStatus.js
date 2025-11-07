@@ -74,5 +74,6 @@ const DisplayStatus = ({ processId, onStatusChange }) => {
     </div>
   );
 };
+{resultData && <DisplayResults data={resultData} />}
 
 export default DisplayStatus;
