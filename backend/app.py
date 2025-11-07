@@ -62,6 +62,16 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # Include routers
 app.include_router(scoring_router)
 
+from fastapi import FastAPI
+from fastapi.responses import PlainTextResponse
+
+app = FastAPI()
+
+@app.api_route("/health", methods=["GET", "HEAD"])
+async def health():
+    return PlainTextResponse("ok")
+
+
 # Root route
 @app.get("/")
 @limiter.limit("10/minute")

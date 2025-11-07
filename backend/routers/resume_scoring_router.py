@@ -28,7 +28,6 @@ processing_tasks = {}
 class ScoringRequest(BaseModel):
     job_description: str
 
-
 @router.post("/process-batch")
 async def process_resume_batch(
     background_tasks: BackgroundTasks,
