@@ -22,23 +22,26 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+            python-version: '3.11'
+
       # 4️⃣ Create .env.local from the DOTENV secret
       - name: Create .env.local
         run: echo "$DOTENV" > .env.local
         env:
           DOTENV: ${{ secrets.DOTENV }}
 
-      # 5️⃣ Start Backend
-      - name: Open venv
-        run: venv\Scripts\activate
+      - name: install dependencies
+        run: pip install -r requirements.txt
 
+          # 5️⃣ Start Backend        
       - name: Start backend
-        run: uvicorn app:app        
-
-
-      # 5️⃣ Start Frontend
-      - name: Open venv
-        run: venv\Scripts\activate
-
-      - name: Start backend
-        run: npm start        
+        working-directory: ./backend
+        run: uvicorn app:app --host 127.0.0.1 --port 8000 &  
+        
+        # 5️⃣ Start Frontend
+      - name: Start frontend
+        working-directory: ./frontend
+        run: npm start
