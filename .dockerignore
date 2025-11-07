@@ -1,0 +1,27 @@
+# VCS
+.git
+.gitignore
+
+# Environment / secrets
+.env
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Logs
+*.log
+
+# Node modules (exclude both root and frontend path variants if any)
+node_modules/
+frontend/node_modules/
+
+# IDE/editor
+.vscode/
+.idea/
+
+# Build artifacts (keep built CRA only inside image)
+build/
+dist/
+
+# DO NOT list Dockerfile here; it must be sent in build context

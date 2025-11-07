@@ -2,13 +2,15 @@
 import React, { useState, useEffect } from "react";
 
 const tableStyles = {
-  width: "100%",
+  width: "90%",
   borderCollapse: "separate",
   borderSpacing: 0,
   background: "#282A36",
   borderRadius: "8px",
   overflow: "hidden",
-  boxShadow: "0 2px 8px rgba(0,0,0,0.09)"
+  boxShadow: "0 2px 8px rgba(0,0,0,0.09)",
+  margin: "auto",
+  border: "5px solid rgba(0, 51, 255, 0.45)",
 };
 
 const thStyles = {
@@ -64,9 +66,9 @@ function ShowTable({ taskId }) {
 
   return (
     <div style={{ marginTop: "2em" }}>
-      <h3 style={{ color: "#f8f8f2", marginBottom: "0.5em" }}>
+      {/* <h3 style={{ color: "#f8f8f2", marginBottom: "0.5em" }}>
         Results for Task: <span style={{ color: "#50fa7b" }}>{taskId}</span>
-      </h3>
+      </h3> */}
       <table style={tableStyles}>
         <thead>
           <tr style={{}}>
@@ -81,6 +83,7 @@ function ShowTable({ taskId }) {
         </thead>
         <tbody>
           {candidates.map((cand, idx) => (
+            
             <tr
               key={cand.filename || idx}
               style={{

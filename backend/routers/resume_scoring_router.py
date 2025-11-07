@@ -230,4 +230,3 @@ async def process_in_background(task_id: str, job_description: str, file_data_li
             "error": str(e),
             "failed_at": datetime.now().isoformat()
         })
-

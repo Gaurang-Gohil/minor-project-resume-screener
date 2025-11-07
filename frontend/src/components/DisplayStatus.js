@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./StatusDisplay.css"; // import your new CSS
+import Loader from "./animation/loader";
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
@@ -64,7 +65,7 @@ const DisplayStatus = ({ processId, onStatusChange }) => {
         {status === "completed"
           ? "✔️ Completed"
           : status === "processing"
-          ? "⏳ Processing..."
+          ? `${Loader}`
           : status === "failed"
           ? "❌ Failed"
           : status === "error"
