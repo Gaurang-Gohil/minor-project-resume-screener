@@ -64,7 +64,7 @@ const DisplayStatus = ({ processId, onStatusChange }) => {
         {status === "completed"
           ? "✔️ Completed"
           : status === "processing"
-          ? `${Loader}`
+          ? "🔁 Processing"
           : status === "failed"
           ? "❌ Failed"
           : status === "error"
