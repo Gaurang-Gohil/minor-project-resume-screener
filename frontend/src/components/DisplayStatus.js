@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./StatusDisplay.css"; // import your new CSS
-import Loader from "./animation/loader";
+import "./StatusDisplay.css";
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
