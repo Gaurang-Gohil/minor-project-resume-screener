@@ -29,18 +29,6 @@ jobs:
         with:
             python-version: '3.11'
 
-      - name: Create backend .env from DOTENV secret (safe)
-        run: |
-            if [ -z "${DOTENV:-}" ]; then
-            echo "DOTENV secret is empty — refusing to overwrite backend/.env" >&2
-            exit 1
-            fi
-            mkdir -p backend
-            printf '%s\n' "$DOTENV" > backend/.env
-            echo "Created backend/.env (contents hidden)"
-        env:
-            DOTENV: ${{ secrets.DOTENV }}
-
       - name: install dependencies
         run: pip install -r requirements.txt
 
