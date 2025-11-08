@@ -22,7 +22,7 @@ logger.info("Starting AI Resume Screening FastAPI app...")
 origins = [
     "http://localhost",
     "http://localhost:3000",
-]
+]   
 
 # Create single FastAPI app instance
 app = FastAPI(
